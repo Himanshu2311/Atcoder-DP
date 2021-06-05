@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define TEZ ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define rf(i,a,b) for(ll i=a;i>=b;i--)
+#define pb push_back
+#define vi vector<pair<ll,ll>>
+#define ff first
+#define ss second
+#define mp map<ll,ll>
+#define test ll t; cin>>t; while(t--)
+#define srt(v) sort(v.begin(),v.end())
+double pi = acos(-1);
+const ll MOD = 1000000007;
+void OJ() {
+	TEZ;
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+ll solve(vector<ll> &dp, vector<ll> &v, ll in, ll k) {
+	if (in == 0) {
+		return dp[in] = 0;
+	}
+	if (in == 1) {
+		return dp[in] = abs(v[in] - v[in - 1]);
+	}
+	if (dp[in] != LLONG_MAX)
+		return dp[in];
+	ll c = 1;
+	while (c <= k) {
+		if (in - c < 0)
+			break;
+		dp[in] = min(abs(v[in] - v[in - c]) + solve(dp, v, in - c, k), dp[in]);
+		c++;
+	}
+	return dp[in];
+}
+int main() {
+	OJ();
+	clock_t clk = clock();
+	ll n, k;
+	cin >> n >> k;
+	vector<ll> v(n);
+	f(i, 0, n)
+	cin >> v[i];
+	vector<ll> dp(n, LLONG_MAX);
+	cout << solve(dp, v, n - 1, k) << endl;
+	clk = clock() - clk;
+	cerr << "Time Elapsed: " << fixed << setprecision(10) << ((long double)clk) / CLOCKS_PER_SEC << "\n";
+}
