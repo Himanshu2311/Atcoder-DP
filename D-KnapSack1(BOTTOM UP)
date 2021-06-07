@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define TEZ ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define rf(i,a,b) for(ll i=a;i>=b;i--)
+#define pb push_back
+#define vi vector<pair<ll,ll>>
+#define ff first
+#define ss second
+#define mp map<ll,ll>
+#define test ll t; cin>>t; while(t--)
+#define srt(v) sort(v.begin(),v.end())
+#define rvrs(s) reverse(s.begin(),s.end())
+double pi = acos(-1);
+const ll MOD = 1000000007;
+ll dp[105][100005];
+ll n, w;
+void OJ() {
+	TEZ;
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+ll solve(vi &v, ll in, ll co) {
+	if (co < 0)
+		return LLONG_MIN;
+	if (in == n or co == 0) {
+		return 0;
+	}
+	if (dp[in][co] != -1)
+		return dp[in][co];
+	ll a = -1;
+	if (v[in].ff <= co) {
+		a = max(v[in].ss + solve(v, in + 1, co - v[in].ff), solve(v, in + 1, co));
+	} else {
+		a = solve(v, in + 1, co);
+	}
+	return dp[in][co] = a;
+}
+int main() {
+	OJ();
+	clock_t clk = clock();
+	cin >> n >> w;
+	memset(dp, -1, sizeof dp);
+	vi v(n);
+	f(i, 0, n)
+	cin >> v[i].ff >> v[i].ss;
+	srt(v);
+	cout << solve(v, 0, w);
+	clk = clock() - clk;
+	cerr << "Time Elapsed: " << fixed << setprecision(10) << ((long double)clk) / CLOCKS_PER_SEC << "\n";
+}
