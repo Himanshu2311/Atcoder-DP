@@ -15,8 +15,8 @@ typedef unsigned long long ull;
 #define rvrs(s) reverse(s.begin(),s.end())
 double pi = acos(-1);
 const ll MOD = 1000000007;
-ll dp[105][100005];
-ll n, w;
+vector<ll> adj[55];
+bool mark[55], ok = false;
 void OJ() {
 	TEZ;
 #ifndef ONLINE_JUDGE
@@ -24,32 +24,30 @@ void OJ() {
 	freopen("output.txt", "w", stdout);
 #endif
 }
-ll solve(vi &v, ll in, ll co) {
-	if (co < 0)
-		return LLONG_MIN;
-	if (in == n or co == 0) {
-		return 0;
-	}
-	if (dp[in][co] != -1)
-		return dp[in][co];
-	ll a = -1;
-	if (v[in].ff <= co) {
-		a = max(v[in].ss + solve(v, in + 1, co - v[in].ff), solve(v, in + 1, co));
-	} else {
-		a = solve(v, in + 1, co);
-	}
-	return dp[in][co] = a;
-}
 int main() {
 	OJ();
 	clock_t clk = clock();
+	ll n, w;
 	cin >> n >> w;
-	memset(dp, -1, sizeof dp);
+	ll dp[n + 1][w + 1];
+	memset(dp, 0, sizeof dp);
 	vi v(n);
 	f(i, 0, n)
 	cin >> v[i].ff >> v[i].ss;
 	srt(v);
-	cout << solve(v, 0, w);
+	f(i, 1, n + 1) {
+		f(j, 1, w + 1) {
+			dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+			if (j >= v[i - 1].ff)
+				dp[i][j] = max(dp[i][j], dp[i - 1][j - v[i - 1].ff] + v[i - 1].ss);
+		}
+	}
+	// f(i, 1, n + 1) {
+	// 	f(j, 1, w + 1)
+	// 	cout << dp[i][j] << " ";
+	// 	cout << endl;
+	// }
+	cout << dp[n][w];
 	clk = clock() - clk;
 	cerr << "Time Elapsed: " << fixed << setprecision(10) << ((long double)clk) / CLOCKS_PER_SEC << "\n";
 }
