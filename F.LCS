@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define TEZ ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define rf(i,a,b) for(ll i=a;i>=b;i--)
+#define pb push_back
+#define vi vector<pair<ll,ll>>
+#define ff first
+#define ss second
+#define mp map<ll,ll>
+#define test ll t; cin>>t; while(t--)
+#define srt(v) sort(v.begin(),v.end())
+#define rvrs(s) reverse(s.begin(),s.end())
+double pi = acos(-1);
+const ll MOD = 1000000007;
+void OJ() {
+	TEZ;
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+int main() {
+	OJ();
+	clock_t clk = clock();
+	string s1, s2;
+	cin >> s1 >> s2;
+	ll n1 = s1.length(), n2 = s2.length();
+	ll dp[n1 + 1][n2 + 1];
+	memset(dp, 0, sizeof dp);
+	f(i, 1, n1 + 1) {
+		f(j, 1, n2 + 1) {
+			if (s1[i - 1] == s2[j - 1]) {
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+			} else {
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+			}
+		}
+	}
+	ll i = n1, j = n2;
+	string ans = "";
+	while (i and j) {
+		if (dp[i][j] == dp[i - 1][j])
+			i--;
+		else if (dp[i][j] == dp[i][j - 1])
+			j--;
+		else if (dp[i][j] == dp[i - 1][j - 1] + 1) {
+			ans += s1[i - 1];
+			i--;
+			j--;
+		}
+	}
+	rvrs(ans);
+	cout << ans;
+	clk = clock() - clk;
+	cerr << "Time Elapsed: " << fixed << setprecision(10) << ((long double)clk) / CLOCKS_PER_SEC << "\n";
+}
