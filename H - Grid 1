@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define MUSA23 ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define f(i,a,b) for(ll i=a;i<b;i++)
+#define rf(i,a,b) for(ll i=a;i>=b;i--)
+#define pb push_back
+#define vi vector<pair<ll,ll>>
+#define ff first
+#define ss second
+#define mp map<ll,ll>
+#define test ll t; cin>>t; while(t--)
+#define srt(v) sort(v.begin(),v.end())
+#define rvrs(s) reverse(s.begin(),s.end())
+double pi = acos(-1);
+const ll MOD = 1000000007;
+ll n, m;
+string s[1005];
+ll dp[1005][1005];
+void OJ() {
+	MUSA23;
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+ll solve(ll r, ll j) {
+	if (r == n - 1 and j == m - 1) {
+		return dp[r][j] = 1;
+	}
+	if (dp[r][j] != -1)
+		return dp[r][j];
+	ll a = 0, b = 0;
+	if (r + 1 < n and s[r + 1][j] == '.')
+		a = solve(r + 1, j);
+	if (j + 1 < m and s[r][j + 1] == '.')
+		b = solve(r, j + 1);
+	return dp[r][j] = (a + b) % MOD;
+}
+int main() {
+	OJ();
+	clock_t clk = clock();
+	cin >> n >> m;
+	f(i, 0, n)
+	f(j, 0, m)
+	cin >> s[i][j];
+	memset(dp, -1, sizeof dp);
+	cout << solve(0, 0) << endl;
+	clk = clock() - clk;
+	cerr << "Time Elapsed: " << fixed << setprecision(10) << ((long double)clk) / CLOCKS_PER_SEC << "\n";
+}
